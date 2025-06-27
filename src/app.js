@@ -7,28 +7,22 @@ const app = express();
 
 
 //handle the code 
-app.use("/user",
-
-(req,res,next)=>{
- 
-    console.log("Handling the route ")
-    res.send("The response done ") 
+app.use("/",(req,res,next)=>{
     next();
+})
 
 
-},
-(req, res , next)=>{
-    // another route handler inside existing route 
-    res.send("The response done 2 ")
-    console.log("Handling the route 1 ka 2 ")
+
+app.get("/user", (req, res, next)=>{
+    console.log("Handling the route user 2 ");
+    res.send("2nd Route handler");
     next();
-},
-(req, res , next)=>{
-    res.send("The response is done no. 3 ")
-    console.log("Handling the route 1 ka 3 ")
-    next();
-}
-);
+})
+app.get("/user", (req , res , next )=>{
+    console.log("Handling the route user ");
+    // next();
+});
+
 
 
 
