@@ -7,26 +7,28 @@ const app = express();
 
 
 //handle the code 
+app.use("/user",
+
+(req,res,next)=>{
+ 
+    console.log("Handling the route ")
+    res.send("The response done ") 
+    next();
 
 
-// This will only handle get call to user 
-app.get("/user",(req,res)=>{
-    res.send({fisrtname: "Varun", Lastname : "Malewar"});
-})
-
-
-
-app.post("/user",(req,res)=>{
-    console.log("Save data to the database ")
-    // saved data to the DB 
-    res.send("Data is successfully saved to the database");
-})
-
-
-// This will match all the HTTP method API calls to /test
-app.use("/test",(req,res)=>{
-    res.send("Hello from the server");
-})
+},
+(req, res , next)=>{
+    // another route handler inside existing route 
+    res.send("The response done 2 ")
+    console.log("Handling the route 1 ka 2 ")
+    next();
+},
+(req, res , next)=>{
+    res.send("The response is done no. 3 ")
+    console.log("Handling the route 1 ka 3 ")
+    next();
+}
+);
 
 
 
