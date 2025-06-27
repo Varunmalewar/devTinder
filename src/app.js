@@ -6,22 +6,39 @@ const app = express();
 
 
 
-//handle the code 
-app.use("/",(req,res,next)=>{
-    next();
+//Handle the AUth middleware for all request GET , POST , PUT , Delete 
+app.use("/admin",(req,res,next)=>{
+    console.log("Admin is getting checked")
+    const token = "xyz";
+    const isAdminAuthorised = token === "xyz";
+    if(!isAdminAuthorised){
+        res.status(401).send("unauthorised data")
+
+        
+    }
+    else{
+        next();
+    }
+
 })
 
+// Admin can have multiple api calls
+app.get("/admin/getAllData",(req,res)=>{
+    // check if request is authorised
+    //logic of fething data 
+    res.send("data is sent")
 
 
-app.get("/user", (req, res, next)=>{
-    console.log("Handling the route user 2 ");
-    res.send("2nd Route handler");
-    next();
+ 
+
+    
 })
-app.get("/user", (req , res , next )=>{
-    console.log("Handling the route user ");
-    // next();
-});
+app.get("/admin/deleteAllUser",(req,res)=>{
+    //logic of fething data 
+
+    res.send("delete user");
+})
+
 
 
 
