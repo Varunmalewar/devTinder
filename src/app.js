@@ -1,6 +1,6 @@
 // import the express
 const express = require('express');
-const {adminauth, userauth} = require ("./middleware/auth.js")
+
 
 //creating an instance of express 
 const app = express();
@@ -8,30 +8,20 @@ const app = express();
 
 
 //Handle the AUth middleware for all request GET , POST , PUT , Delete 
-app.use("/admin", adminauth);
-
-
-app.get("/user",userauth,(req,res)=>{
-    res.send("Hello User")
-})
 
 app.get("/user/login",(req,res)=>{
+    throw new Error("vahjdcjkc");
+    
     res.send ("user login");
 })
 
-// Admin can have multiple api calls
-app.get("/admin/getAllData",(req,res)=>{
-    // check if request is authorised
-    //logic of fething data 
-    res.send("data is sent")    
+app.use("/",(err,req,res,next)=>{
+    if(err){
+        //log your error message 
+        res.status(500).send("something went wrong ");
+    }
 })
 
-
-app.get("/admin/deleteAllUser",(req,res)=>{
-    //logic of fething data 
-
-    res.send("delete user");
-})
 
 
 
