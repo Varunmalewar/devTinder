@@ -12,11 +12,14 @@ connectDB().then(()=>{
     console.log("server is running on port 3000");
 });
 
-
-
 }).catch(err=>{
    console.log("Database is not established ")
 })
+
+
+
+
+
 
 
 
