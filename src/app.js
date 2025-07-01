@@ -6,26 +6,29 @@ const User = require("./models/user")
 //creating an instance of express 
 const app = express();
 
+// to write middleware we use app.use so as it is being activated for all the routes
+app.use(express.json());
+
 app.post("/signup", async (req,res)=>{
+
+
+    // console.log(req.body);
+    
     // Creating new instance of user model 
-
-    const user = new User( {
-        firstName : "Virat",
-        lastName : "kohli",
-        email : "virat.cse22@sbjit.edu.in",
-        password : "Varun@123",
-        age: 21,
-        gender : "Male"
-    })
-
+    const user = new User( req.body)
     
 
-
+    
     // .save() help to store user data into the database it always returns a promise therefore we use await .
-    await user.save();
+    try{
+        await user.save();
+        res.send("user added successfully");
+    }
+    catch(err){
+        res.status(400).send("error saving the user : "+err.message)
+    }
 
-    res.send("user added successfully");
-
+    
 
 })
 
