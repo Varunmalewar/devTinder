@@ -11,14 +11,12 @@ app.use(express.json());
 
 app.post("/signup", async (req,res)=>{
 
-
-    // console.log(req.body);
     
     // Creating new instance of user model 
     const user = new User( req.body)
     
 
-    
+
     // .save() help to store user data into the database it always returns a promise therefore we use await .
     try{
         await user.save();
