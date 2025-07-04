@@ -31,6 +31,60 @@ app.post("/signup", async (req,res)=>{
 })
 
 
+// DB operation are done always using async and await 
+// Get user by email
+app.get("/user",async(req,res)=>{
+    const userEmail = req.body.email;
+
+    try{
+
+        const user = await User.findOne({email:userEmail});
+        if(!user){
+            return res.status(404).send("user not found"); 
+        }
+        res.send(user);
+    //    const user= await User.find({email : userEmail})
+    //    if(user.length=== 0 ){
+    //     res.status(404).send("user not found")
+    //    }
+    //  else {  res.send(user); }
+
+    }
+    catch(err){
+        res.status(400).send("Something went wrong ");
+
+    }
+
+
+})
+
+//Feed API - GET /feed - get all the users from the database
+app.get("/feed",async (req,res)=>{
+
+    try{
+        const user= await User.find({})  // to get all the users of collection 
+        res.send(user)
+
+
+    }
+     catch(err){
+        res.status(400).send("Something went wrong ");
+
+    }
+    
+
+
+
+
+});
+
+
+
+
+
+
+
+
 
 
 
