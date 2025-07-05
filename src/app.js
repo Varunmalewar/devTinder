@@ -83,6 +83,34 @@ app.get("/feed",async (req,res)=>{
 
 
 
+//delete api 
+app.delete("/user",async(req,res)=>{
+    const userId = req.body.userId;
+    try{
+        // short hand const user = await User.findByIdAndDelete({_id : userId}); for is next line
+        const user = await User.findByIdAndDelete(userId);
+        res.send("user deleted successfully")
+        
+    }
+    
+    catch(err){
+        res.status(400).send("Something went wrong ");
+    }
+})
+
+
+
+//update data of user 
+
+
+
+
+
+
+
+
+
+
 
 
 
