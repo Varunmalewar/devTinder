@@ -11,6 +11,10 @@ app.use(express.json());
 
 app.post("/signup", async (req,res)=>{
 
+    // Remove photoUrl if empty or falsy to allow default to apply
+    if (!req.body.photoUrl) {
+        delete req.body.photoUrl;
+    }
     
     // Creating new instance of user model 
     const user = new User( req.body)
@@ -20,6 +24,7 @@ app.post("/signup", async (req,res)=>{
     // .save() help to store user data into the database it always returns a promise therefore we use await .
     try{
         await user.save();
+        console.log(user); // Log user document to check timestamps
         res.send("user added successfully");
     }
     catch(err){
@@ -27,7 +32,6 @@ app.post("/signup", async (req,res)=>{
     }
 
     
-
 })
 
 
@@ -101,6 +105,40 @@ app.delete("/user",async(req,res)=>{
 
 
 //update data of user 
+app.patch("/user/:userId", async(req,res)=>{
+    const userId = req.params?.userId;
+    const data = req.body;
+
+    try{
+        const ALLOWED_UPDATES = ["photoUrl","about","gender","age","skills"]
+
+        // allowed keys 
+        const isUpdateAllowed = Object.keys(data).every((k) => ALLOWED_UPDATES.includes(k));
+        if(!isUpdateAllowed){
+            throw new Error("Update not allowed ");
+        }
+
+        // Convert skills to array if it's a string
+        // if (data.skills && typeof data.skills === 'string') {
+        //     data.skills = data.skills.split(',').map(skill => skill.trim());
+        // }
+
+        if(data?.skills.length>7){
+            throw new Error("Skill limit exceeed")
+        }
+
+        const dete=await User.findByIdAndUpdate({_id: userId }, { $set: data }, {
+            runValidators: true,
+            returnDocument: "after"
+        }) 
+        console.log(dete)
+        res.send("user updated successfully")
+
+    }
+    catch(err){
+        res.status(400).send("Something went wrong "+err.message);
+    }
+})
 
 
 
