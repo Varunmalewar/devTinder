@@ -98,11 +98,12 @@ app.post("/login",async(req,res) =>{
             throw new Error ("Email invalid credentials")
         } 
 
-        const isPasswordValid = await bcrypt.compare(password,user.password)
+        const isPasswordValid = await user.validatePassword(password);
 
         if(isPasswordValid){
             // Create a JWT token
-            const token = await jwt.sign({_id: user._id}, "DEV@Tinder$790", {expiresIn: "7d"});
+            const token = await user.getJWT();
+            // Log the token to the console
             console.log(token)
 
 
@@ -112,7 +113,7 @@ app.post("/login",async(req,res) =>{
             res.send("Login Successfull");
         }
         else{
-            
+
             throw new Error("Password is Invalid")
         }
 
