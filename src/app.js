@@ -2,6 +2,8 @@
 const express = require('express');
 const connectDB = require("./config/database")
 const User = require("./models/user")
+const  validateSignUpData = require("./utils/validation")
+const bcrypt = require("bcrypt");
 
 //creating an instance of express 
 const app = express();
@@ -12,17 +14,33 @@ app.use(express.json());
 app.post("/signup", async (req,res)=>{
 
     // Remove photoUrl if empty or falsy to allow default to apply
-    if (!req.body.photoUrl) {
-        delete req.body.photoUrl;
-    }
+    // if (!req.body.photoUrl) {
+    //     delete req.body.photoUrl;
+    // }
+
+    try{
+    // Validation of data  
+    validateSignUpData(req);
+
+    const{firstName,lastName,email,password}= req.body
+
+    //Encrypt the password 
+    const passwordHash = await bcrypt.hash(password,10) 
+    console.log(passwordHash)
+
+    // Store user in the database 
+
+
     
     // Creating new instance of user model 
-    const user = new User( req.body)
+    const user = new User( {
+        firstName,lastName,email,password:passwordHash
+    })
     
 
 
     // .save() help to store user data into the database it always returns a promise therefore we use await .
-    try{
+    
         await user.save();
         console.log(user); // Log user document to check timestamps
         res.send("user added successfully");
@@ -33,6 +51,45 @@ app.post("/signup", async (req,res)=>{
 
     
 })
+
+//Login API
+const validator = require('validator');
+
+app.post("/login",async(req,res)=>{
+    try{
+        // Validation of data
+        const {email, password} = req.body;
+
+        if(!email || !validator.isEmail(email)){
+            return res.status(400).send("Invalid email");
+        }
+        if(!password){
+            return res.status(400).send("Password is required");
+        }
+
+        // Proceed with login logic here (not changed)
+
+        const user = await User.findOne({email : email})
+        if(!user){
+            throw new Error ("Email id is not present in DB")
+        }
+
+        const isPasswordValid = await bcrypt.compare(password,user.password)
+
+        if(isPasswordValid){
+            res.send("Login Successfull");
+        }
+        else{
+            throw new Error("Password is Invalid")
+        }
+
+
+    }
+    catch(err){
+        res.status(400).send("ERROR :"+err.message)
+    }
+})
+
 
 
 // DB operation are done always using async and await 
@@ -54,7 +111,7 @@ app.get("/user",async(req,res)=>{
     //  else {  res.send(user); }
 
     }
-    catch(err){
+    catch(err){ 
         res.status(400).send("Something went wrong ");
 
     }
