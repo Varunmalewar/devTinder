@@ -97,6 +97,32 @@ authRouter.post("/login",async(req,res) =>{
 })
 
 
+authRouter.post("/logout",async(req,res)=>{
+    // try{
+    //     // Clear the cookie by setting its maxAge to 0
+    //     res.cookie("token", "", { maxAge: 0 });
+    //     res.send("Logout successful");
+    // }
+    // catch(err){
+    //     res.status(400).send("Error logging out: " + err.message);
+    // }
+    // or
+
+    try{
+        // Clear the cookie
+        res.cookie("token",null,{
+            expires: new Date(Date.now()),
+
+        });
+        res.send("Logout successful");
+
+    }
+    catch(err){
+        res.status(400).send("Error logging out: " + err.message);
+    }
+})
+
+
 
 
 module.exports = authRouter;
