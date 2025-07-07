@@ -8,11 +8,14 @@ auth router
 ## profile router
 - GET /profile/view
 - PATCH /profile/edit
-- PATCH /profile/password
+- PATCH /profile/password // Forgot password API
 
 ## connectionrequest router
-- POST /request/send/intrested/:userId
-- POST /request/send/ignored/:userId
+- POST /request/send/status/:userId
+ status can be ignored or intrested
+
+
+
 - POST /request/review/accepted/:requestId
 - POST /request/review/rejected/:requestId
 
