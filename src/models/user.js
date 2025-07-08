@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
     firstName : {
         type: String,
+        index: true, // It automatically creates an index on the firstName field
         minLength:4,
         // required : true,
         maxLength : 50
@@ -16,10 +17,11 @@ const userSchema = new mongoose.Schema({
     lastName :{
         type:String
     },
-    email:{
+    email:{ 
         type:String,
         required : true,
-        unique : true,
+        unique : true,   // It automatically creates a unique index on the email field
+        lowercase : true, // It automatically converts the email to lowercase before saving it
         trim : true,
         validate(value){
             if(!validator.isEmail(value)){
@@ -67,6 +69,16 @@ const userSchema = new mongoose.Schema({
 },{
     timestamps : true,
 });
+
+
+
+//compound index // This will create a compound index on the firstName and lastName fields
+// This is useful for queries that search for users by both firstName and lastName
+// User.find({firstName : "Varun", lastName : "Malewar"})
+// userSchema.index({
+//     firstName : 1,
+//     lastName : 1
+// });
 
 
 userSchema.methods.getJWT = async function (){    // not use arrow function here because we want to use 'this'keyword
