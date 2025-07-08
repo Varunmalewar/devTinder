@@ -25,10 +25,14 @@ const connectionRequestSchema = new mongoose.Schema({
 
     fromUserId : {
         type: mongoose.Schema.Types.ObjectId,
+        ref : "User", // Reference to the User collection
+        // This will allow us to populate the sender's details later
         required: true, // Ensure that the sender's ID is provided
     },
     toUserId :{
         type: mongoose.Schema.Types.ObjectId,
+        ref : "User", // Reference to the User collection
+        // This will allow us to populate the receiver's details later
         required: true, // Ensure that the receiver's ID is provided
     },
     status:{

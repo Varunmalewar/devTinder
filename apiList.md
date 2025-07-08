@@ -23,8 +23,8 @@ auth router
 
 
 ## userRouter
+- GET /user/request/received
 - GET /user/connection
-- GET /user/request/
 - GET /user/feed - Gets you the profiles of other users on platform
 
 Status: ignored , intrested , accepted , rejected 

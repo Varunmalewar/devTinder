@@ -22,11 +22,13 @@ app.use(cookiesParser());
 const authRouter = require("./Routes/auth");
 const requestRouter = require("./Routes/request");
 const profileRouter = require("./Routes/profile");
+const userRouter = require('./Routes/user');
 
 
 app.use("/",authRouter);
 app.use("/",requestRouter);
 app.use("/",profileRouter);
+app.use("/",userRouter);
 
 
 
