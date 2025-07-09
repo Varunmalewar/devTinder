@@ -2,9 +2,11 @@
 const express = require('express');
 const connectDB = require("./config/database")
 
-
+const cors = require('cors');
 
 const cookiesParser = require('cookie-parser')
+
+
 
 
 //creating an instance of express 
@@ -16,6 +18,7 @@ const app = express();
 // to write middleware we use app.use so as it is being activated for all the routes
 app.use(express.json());
 app.use(cookiesParser());
+app.use(cors());
 
 
 
